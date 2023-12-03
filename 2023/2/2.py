@@ -87,4 +87,18 @@ for game_id in sorted(max_color_values_by_game.keys()):
 
     game_id_sum += int(game_id)
 
-print (game_id_sum)
+print (f"Part 1: {game_id_sum}")
+
+# Part 2:
+# The power of a set of cubes is equal to the numbers of red, green, and blue cubes multiplied together.
+power = 0
+for game_id in max_color_values_by_game.keys():
+    stats = max_color_values_by_game[game_id]
+
+    game_val = 1
+    for val in stats.values():
+         game_val *= int(val)
+
+    power += game_val
+
+print (f"Part 2: {power}")

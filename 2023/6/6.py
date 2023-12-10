@@ -51,6 +51,31 @@ def calculate_winning_games(data_map: dict) -> int:
 
     return wins
 
+def calculate_winning_game(data_map: dict) -> int:
+    possible_wins = 0
+
+    time_str = ""
+    distance_str = ""
+
+    for game in matches:
+        time_str += str(game['time'])
+        distance_str += str(game['distance'])
+
+    game_duration = int(time_str)
+    distance = int(distance_str)
+
+    for charge_time in range(game_duration):
+        drive_time = game_duration - charge_time
+        game_distance = charge_time * drive_time
+
+        # If we moved further than the previous record, we win!
+        if game_distance > distance:
+            game['winning_games'].append(charge_time)
+            possible_wins += 1
+
+    return possible_wins
+
+
 if len (sys.argv) != 2:
 	print("Usage: 6.py file_path", file=sys.stderr)
 	sys.exit(1)
@@ -65,3 +90,4 @@ except IOError as e:
     sys.exit(1)
 
 print(f"Part 1: {calculate_winning_games(matches)}")
+print(f"Part 2: {calculate_winning_game(matches)}")

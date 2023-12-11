@@ -15,10 +15,13 @@ sequences = [
 def parse_line(line: str) -> None:
     sequences.append([int(x) for x in line.split()])
 
-def OASIS(sequences: list[list[int]]) -> int:
+def extrapolate_value_sum(sequences: list[list[int]], future=True) -> int:
     sum = 0
 
     for seq in sequences:
+        if not future:
+            seq = list(reversed(seq))
+
         sum += extrapolate_next_value(seq)
 
     return sum
@@ -65,4 +68,5 @@ except IOError as e:
     print(f"File to open '{file_path}': {str(e)}", file=sys.stderr)
     sys.exit(1)
 
-print(f"Part 1: {OASIS(sequences)}")
+print(f"Part 1: {extrapolate_value_sum(sequences)}")
+print(f"Part 2: {extrapolate_value_sum(sequences, False)}")

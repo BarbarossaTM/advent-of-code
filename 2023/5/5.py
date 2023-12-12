@@ -4,7 +4,6 @@
 #  --  Sun 10 Dec 2023 11:00:11 PM CET
 #
 
-import json
 import sys
 
 data_map = {
@@ -77,7 +76,7 @@ def map_seed_to_location(value: int) -> int:
 
     return ret
 
-def calculate_lowest_location(data_map: dict) -> int:
+def calculate_lowest_location_part1(data_map: dict) -> int:
     min_location = None
 
     for seed in data_map['seeds']:
@@ -88,6 +87,30 @@ def calculate_lowest_location(data_map: dict) -> int:
 
         if loc < min_location:
             min_location = loc
+
+    return min_location
+
+def calculate_lowest_location_part2(data_map: dict) -> int:
+    min_location = None
+
+    seeds = data_map['seeds']
+
+    # Pairs of seeds, which represent <start> <range> now
+    for i in range(len(seeds)):
+        if i % 2 == 1:
+            continue
+
+        start = seeds[i]
+        length = seeds[i+1]
+
+        for seed in range(start, start + length):
+            loc = map_seed_to_location(seed)
+            if min_location is None:
+                min_location = loc
+                continue
+
+            if loc < min_location:
+                min_location = loc
 
     return min_location
 
@@ -105,9 +128,8 @@ except IOError as e:
     print(f"File to open '{file_path}': {str(e)}", file=sys.stderr)
     sys.exit(1)
 
-print(f"Part 1: {calculate_lowest_location(data_map)}")
-
-#print(json.dumps(data_map, indent=4))
+print(f"Part 1: {calculate_lowest_location_part1(data_map)}")
+print(f"Part 2: {calculate_lowest_location_part2(data_map)}")
 
 ## Verification
 #for src, dst in {
